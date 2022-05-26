@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-sm)(2x1a$26#05=7)s%ztev7@lpy!76b8b()kp098^o)!@c4&#'
+SECRET_KEY = os.environ.get('LLAVEDJANGO')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -75,8 +76,12 @@ WSGI_APPLICATION = 'proyectoPrograSegura.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.environ.get('NAMEDB'),
+        'USER': os.environ.get('USERDB'),
+        'PASSWORD': os.environ.get('PASSWORDDB'),
+        'HOST': os.environ.get('HOSTDB'),
+        'PORT': os.environ.get('PORTDB'),
     }
 }
 
