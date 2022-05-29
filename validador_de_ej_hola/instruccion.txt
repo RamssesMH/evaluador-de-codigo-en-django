@@ -1,0 +1,1 @@
+Este validador verifica que un script reciba un parametro y mande como respuesta "hola usuario"
