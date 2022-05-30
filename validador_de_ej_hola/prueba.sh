@@ -1,2 +1,2 @@
 #! /bin/bash
-ech "hola $1"
+echo "hola $1"
