@@ -5,6 +5,10 @@ from django.http import HttpResponse
 from modelo import models
 import datetime
 from datetime import timezone
+import crypt
+import os
+import base64
+import re
 
 
 def get_client_ip(request):
@@ -100,3 +104,30 @@ def enviar_formulario(request):
             return HttpResponse('OK')
         else:
             return HttpResponse('Intentos agotados')
+
+def validar_contraseña(password):
+    regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!#%*?&-_]{10,}$"
+    if re.search(regex, password) is not None:
+        return True
+    return False
+
+def registro_usuarios(request):
+    t = "registro.html"
+    bytes_aleatorios = os.urandom(16)
+    salt = base64.b64encode(bytes_aleatorios).decode('utf-8')
+    if request.method == "GET":
+        return render(request, t)
+    elif request.method == "POST":
+        usuario=request.POST.get('usuario', '')
+        password=request.POST.get('password', '')
+        if usuario == "":
+            return HttpResponse("Todos los campos son requeridos")
+        if password == "":
+            return HttpResponse("Todos los campos son requeridos")
+        if validar_contraseña(password) == False:
+            return HttpResponse("Debe ingresar minimo 10 caracteres, una mayúscula, una minúscula, un digito y un caracter especial")
+        hasheado = crypt.crypt(password, '$6$' + salt)
+        registro_user=models.registro_usuarios(usuario=usuario, password=hasheado)
+        registro_user.save()
+        return render(request, t)
+    

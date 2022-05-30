@@ -20,4 +20,5 @@ import proyectoPrograSegura.views as vistas
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', vistas.enviar_formulario),
+    path('registro/', vistas.registro_usuarios),
 ]
