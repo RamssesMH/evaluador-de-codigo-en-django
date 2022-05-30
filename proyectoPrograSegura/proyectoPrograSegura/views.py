@@ -1,10 +1,22 @@
-from django.template import Template, Context
+from email import message
+from urllib.request import Request
+from aiohttp_jinja2 import render_template
+from click import password_option
+from django.template import RequestContext, Template, Context
 from django.shortcuts import render, redirect
+from matplotlib.style import context
+from requests import request
+from proyectoPrograSegura.form import LoginForm, TokenForm
 import proyectoPrograSegura.settings as conf
 from django.http import HttpResponse
 from modelo import models
 import datetime
 from datetime import timezone
+from django.contrib.auth import authenticate, login
+
+def mandar_mensaje_bot(mensaje, token, chat_id):
+    send_text = 'https://api.telegram.org/bot' + token + '/sendMessage?chat_id=' + chat_id + '&parse_mode=Markdown&text=' + mensaje
+    response = requests.get(send_text)
 
 
 def get_client_ip(request):
@@ -91,12 +103,29 @@ def enviar_formulario(request):
         request --
         returns: HTTP_Response
     """
+    message = None
+    form = LoginForm(request.POST)
     if request.method == 'GET':
         t = 'envio.html'
-        return render(request, t)
+        return render(request, 'envio.html', { 'message': message, 'form': form})
     elif request.method == 'POST':
         #Actualizar peticiones IP
-        if puede_hacer_peticion(get_client_ip(request)):
-            return HttpResponse('OK')
-        else:
-            return HttpResponse('Intentos agotados')
+        if form.is_valid():
+            username = request.POST['usuario']
+            password = request.POST['password']
+            if puede_hacer_peticion(get_client_ip(request)):
+                user = authenticate(username=username, password=password)
+                if user is not None:
+                    if user.is_active:
+                        login(request, user)
+                        message = "Te has identicado correctamente"
+                        # request.session['logueado'] = True /l
+                        return HttpResponse('')
+                    else:
+                        message = "Tu usuario está inactivo"
+                else:
+                    message = "Tu usuario y/o contraseña es incorrecto"
+            else:
+                return HttpResponse('Intentos agotados')
+        return render(request, 'envio.html', { 'message': message, 'form': form})
+
