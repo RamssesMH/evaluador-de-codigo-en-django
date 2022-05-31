@@ -12,18 +12,15 @@ from django.http import HttpResponse
 from modelo import models
 import datetime
 from datetime import timezone
-<<<<<<< HEAD
 import crypt
 import os
 import base64
 import re
-=======
 from django.contrib.auth import authenticate, login
 
 def mandar_mensaje_bot(mensaje, token, chat_id):
     send_text = 'https://api.telegram.org/bot' + token + '/sendMessage?chat_id=' + chat_id + '&parse_mode=Markdown&text=' + mensaje
     response = requests.get(send_text)
->>>>>>> a5a94e3bd9aa4439e08e3e6c03d8b7991f04bc46
 
 
 def get_client_ip(request):
@@ -105,7 +102,6 @@ def puede_hacer_peticion(ip):
 def enviar_formulario(request):
     """
     Login con número de intentos
-
     keyword Arguments:
         request --
         returns: HTTP_Response
@@ -117,11 +113,25 @@ def enviar_formulario(request):
         return render(request, 'envio.html', { 'message': message, 'form': form})
     elif request.method == 'POST':
         #Actualizar peticiones IP
-<<<<<<< HEAD
-        if puede_hacer_peticion(get_client_ip(request)):
-            return HttpResponse('OK')
-        else:
-            return HttpResponse('Intentos agotados')
+        if form.is_valid():
+            username = request.POST['usuario']
+            password = request.POST['password']
+            if puede_hacer_peticion(get_client_ip(request)):
+                user = authenticate(username=username, password=password)
+                if user is not None:
+                    if user.is_active:
+                        login(request, user)
+                        message = "Te has identicado correctamente"
+                        # request.session['logueado'] = True /l
+                        return HttpResponse('Logueado')
+                    else:
+                        message = "Tu usuario está inactivo"
+                else:
+                    message = "Tu usuario y/o contraseña es incorrecto"
+            else:
+                message = "Intentos agotados"
+        return render(request, 'envio.html', { 'message': message, 'form': form})
+        
 
 def validar_contraseña(password):
     regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!#%*?&-_]{10,}$"
@@ -149,24 +159,5 @@ def registro_usuarios(request):
         registro_user.save()
         return render(request, t)
     
-=======
-        if form.is_valid():
-            username = request.POST['usuario']
-            password = request.POST['password']
-            if puede_hacer_peticion(get_client_ip(request)):
-                user = authenticate(username=username, password=password)
-                if user is not None:
-                    if user.is_active:
-                        login(request, user)
-                        message = "Te has identicado correctamente"
-                        # request.session['logueado'] = True /l
-                        return HttpResponse('')
-                    else:
-                        message = "Tu usuario está inactivo"
-                else:
-                    message = "Tu usuario y/o contraseña es incorrecto"
-            else:
-                return HttpResponse('Intentos agotados')
-        return render(request, 'envio.html', { 'message': message, 'form': form})
 
->>>>>>> a5a94e3bd9aa4439e08e3e6c03d8b7991f04bc46
+
