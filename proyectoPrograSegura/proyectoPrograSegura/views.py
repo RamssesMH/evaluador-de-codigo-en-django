@@ -1,6 +1,5 @@
 from email import message
 from urllib.request import Request
-from aiohttp_jinja2 import render_template
 from click import password_option
 from django.template import RequestContext, Template, Context
 from django.shortcuts import render, redirect
@@ -96,6 +95,27 @@ def puede_hacer_peticion(ip):
             guardar_peticion(ip, registro.intentos + 1)
             return True
 
+def es_usuario_registrado(username, password_usuario):
+    """
+    Verdadero si el usuario está registrado y la contraseña es correcta
+
+    Keyword Arguments:
+    username: String
+    password: String|
+    returns: Bool
+    """
+    try:
+        user = models.registro_usuarios.objects.filter(usuario=username).get()
+        if user:
+            password = user.password
+            salt = password.split('$')[2]
+            hasheado_p_usuario = crypt.crypt(password_usuario, '$6$' + salt)
+            if user.password == hasheado_p_usuario:
+                return True
+            else:
+                return False
+    except Exception as e:
+        return False
 
 
 
@@ -117,15 +137,13 @@ def enviar_formulario(request):
             username = request.POST['usuario']
             password = request.POST['password']
             if puede_hacer_peticion(get_client_ip(request)):
-                user = authenticate(username=username, password=password)
-                if user is not None:
-                    if user.is_active:
-                        login(request, user)
-                        message = "Te has identicado correctamente"
-                        # request.session['logueado'] = True /l
-                        return HttpResponse('Logueado')
-                    else:
-                        message = "Tu usuario está inactivo"
+                user = es_usuario_registrado(username, password)
+                if user is not False:
+                    # login(request, user)
+                    message = "Te has identicado correctamente"
+                    # request.session['logueado'] = True /l
+                    return HttpResponse('Logueado')
+                    
                 else:
                     message = "Tu usuario y/o contraseña es incorrecto"
             else:
