@@ -11,11 +11,16 @@ from django.http import HttpResponse
 from modelo import models
 import datetime
 from datetime import timezone
+from tkinter.tix import MAIN
+from pip import main
+import requests
+import sys
 import crypt
 import os
 import base64
 import re
-from django.contrib.auth import authenticate, login
+import string
+import random
 
 def mandar_mensaje_bot(mensaje, token, chat_id):
     send_text = 'https://api.telegram.org/bot' + token + '/sendMessage?chat_id=' + chat_id + '&parse_mode=Markdown&text=' + mensaje
@@ -117,7 +122,47 @@ def es_usuario_registrado(username, password_usuario):
     except Exception as e:
         return False
 
+def get_token(username):
+    """
+    Crea token de acuerdo a la fecha en que se hace la petición
+    keyword Arguments:
+        timestamp: datetime de referencia
+        returns: Bool
+    """
+    try:
+        usuario = models.registro_usuarios.objects.filter(usuario=username).get()
+        number_of_strings = 1
+        length_of_string = 5
+        for x in range(number_of_strings):
+            digitos = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(length_of_string))
+        timestamp = datetime.datetime.now(timezone.utc)
+        token = models.token_login(token=digitos, id_usuario=usuario.id, timestamp=timestamp)
+        token.save()
+        return digitos
+    except Exception as e:
+        return None
 
+def es_token_valido(username, password, token):
+    """
+    Compara si el token es valido de acuerdo a un tiempo de 3 minutos
+    keyword Arguments:
+        username
+        token: frase de token alamacenada para cada nuevo login
+        returns: Bool
+    """
+    print('entro a validacion de token')
+    if es_usuario_registrado(username, password) == True:
+        try:
+            user = models.registro_usuarios.objects.filter(usuario=username).get()
+            token = models.token_login.objects.filter(id_usuario=user.id).get()
+            momento_actual = datetime.datetime.now(timezone.utc)
+            resta = momento_actual - token.timestamp
+            if resta.seconds < conf.INTENTOS_TOKEN_SEGUNDOS:
+                if token == token.token:
+                    return True
+            return False
+        except Exception as e: 
+            return False
 
 def enviar_formulario(request):
     """
@@ -127,28 +172,50 @@ def enviar_formulario(request):
         returns: HTTP_Response
     """
     message = None
+    print('ENtro envio')
+    t = 'envio.html'
     form = LoginForm(request.POST)
+    token_request = 1
     if request.method == 'GET':
-        t = 'envio.html'
-        return render(request, 'envio.html', { 'message': message, 'form': form})
+        return render(request, t, { 'message': message, 'form': form})
+        
     elif request.method == 'POST':
-        #Actualizar peticiones IP
-        if form.is_valid():
-            username = request.POST['usuario']
-            password = request.POST['password']
-            if puede_hacer_peticion(get_client_ip(request)):
-                user = es_usuario_registrado(username, password)
-                if user is not False:
-                    # login(request, user)
-                    message = "Te has identicado correctamente"
-                    # request.session['logueado'] = True /l
+        print('entro POST')
+        try:
+            tokenForm = TokenForm(request.POST, initial={ 'usuario': request.POST['usuario'], 'password': request.POST['password']})
+            token_request = request.POST['token']
+            print (token_request)
+        except Exception as e:
+            print (e)
+            pass
+        
+        if token_request != 1:
+            print('entro post TOKEN')
+            print('entro en validForm')
+            if tokenForm.is_valid():
+                token = request.POST['token']
+                if es_token_valido(username, password, token):
                     return HttpResponse('Logueado')
-                    
+        else:
+            if form.is_valid():
+                username = request.POST['usuario']
+                password = request.POST['password']
+                if puede_hacer_peticion(get_client_ip(request)):
+                    is_user = es_usuario_registrado(username, password)
+                    if is_user is not False:
+                        # login(request, user)
+                        # tokenForm.fields['usuario'] = username
+                        # tokenForm.fields['password'] = password
+                        tokenF = get_token(username)
+                        return render(request, 'token.html', { 'message': message, 'form': tokenForm} )
+                        # request.session['logueado'] = True /l
+                        # return HttpResponse('Logueado')
+                        
+                    else:
+                        message = "Tu usuario y/o contraseña es incorrecto"
                 else:
-                    message = "Tu usuario y/o contraseña es incorrecto"
-            else:
-                message = "Intentos agotados"
-        return render(request, 'envio.html', { 'message': message, 'form': form})
+                    message = "Intentos agotados"
+        return render(request, t, { 'message': message, 'form': form})
         
 
 def validar_contraseña(password):
