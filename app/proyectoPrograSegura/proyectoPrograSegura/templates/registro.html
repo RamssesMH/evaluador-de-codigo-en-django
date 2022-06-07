@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block titulo %}Analizador de código{% endblock %}
+{% block encabezado %}Registro de usuarios{% endblock %}
+
+
+{% block contenido %}
+
+<form id="form" method="POST" action="">
+    {% csrf_token %}
+    <div class="mb-3 mt-3">
+      <label for="mensaje" class="form-label">Nombre de usuario</label>
+      <input type="text" class="form-control" id="usuario" placeholder="Usuario" name="usuario">
+      <label for="mensaje" class="form-label">Contraseña:</label>
+      <input type="password" class="form-control" id="password" placeholder="Password" name="password">
+      <label for="mensaje" class="form-label">Token de Telegram</label>
+      <input type="text" class="form-control" id="token" placeholder="Token" name="token">
+      <label for="mensaje" class="form-label">ID del chat</label>
+      <input type="text" class="form-control" id="id_chat" placeholder="id_chat" name="id_chat">
+    </div>
+    <div class="mb-3 mt-3">
+      <input type="submit" value="Registrar"/>
+    </div>
+    
+  </form>
+  
+{% endblock %}
