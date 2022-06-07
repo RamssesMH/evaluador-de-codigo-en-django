@@ -10,11 +10,8 @@ class Peticion(models.Model):
 class registro_usuarios(models.Model):
     usuario = models.CharField(max_length=20, default="", unique=True)
     password = models.CharField(max_length=128, default="")
-    class Meta:
-        ordering = ['-id']
-        
-    def __str__(self):
-        return self.usuario
+    token_telegram = models.CharField(max_length=50, default="")
+    chat_id = models.CharField(max_length=20, default="")
 
 class token_login(models.Model):
     token = models.CharField(max_length=5, unique=True)
