@@ -178,9 +178,9 @@ def enviar_token(request):
                 token = request.POST['token']
                 username = request.session['user']
                 if es_token_valido(username, token):
-                    request.session['access_token'] = False
+                    
                     request.session['Logueado'] = True
-                    return HttpResponse('Logueado')
+                    return redirect('/home/')
                 else:
                     message = 'Token inválido'
                     return render(request, t, { 'message': message,'form':form })
@@ -253,6 +253,15 @@ def registro_usuarios(request):
 
 
 def logout(request):
+    request.session['Logueado'] = False
     request.session['access_token'] = False
     request.session.flush()
     return redirect('/')
+
+def home(request):
+    request.session['access_token'] = False
+    if request.session['Logueado'] == True:
+        t = 'home.html'
+        return render(request, t)
+    else:
+        return redirect('/')

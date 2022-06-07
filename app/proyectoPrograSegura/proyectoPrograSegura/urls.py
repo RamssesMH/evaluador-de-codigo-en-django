@@ -23,4 +23,5 @@ urlpatterns = [
     path('token/', vistas.enviar_token),
     path('registro/', vistas.registro_usuarios),
     path('logout/', vistas.logout),
+    path('home/', vistas.home),
 ]
