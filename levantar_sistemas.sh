@@ -7,5 +7,5 @@ for linea in $(ccdecrypt -c "$1"); do
     export "$linea"
 done
 
-
+docker-compose build app
 docker-compose up -d
