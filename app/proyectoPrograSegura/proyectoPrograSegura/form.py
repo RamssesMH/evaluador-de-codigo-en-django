@@ -5,7 +5,7 @@ class LoginForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput())
 
 class TokenForm(forms.Form):
-    token = forms.CharField(required=True)
+    token = forms.CharField(required=True,widget=forms.PasswordInput())
 
 class RegistroForm(forms.Form):
     usuario = forms.CharField()

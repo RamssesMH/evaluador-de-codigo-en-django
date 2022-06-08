@@ -165,27 +165,29 @@ def enviar_token(request):
         request --
         returns: HTTP_Response
     """
-    
-    if request.session['access_token'] == True:
-        message = 'El token se ha enviado a Telegram, es válido sólo por 3 minutos'
-        t= 'envio.html'
-        form = TokenForm(request.POST)
-        if request.method == 'GET':
-            return render(request, t, { 'message': message,'form':form })
-        elif request.method == 'POST':
-            if form.is_valid():
-                print('El formulario es válido')
-                token = request.POST['token']
-                username = request.session['user']
-                if es_token_valido(username, token):
-                    
-                    request.session['Logueado'] = True
-                    return redirect('/home/')
-                else:
-                    message = 'Token inválido'
-                    return render(request, t, { 'message': message,'form':form })
-    else: 
-        return redirect('/')
+    try:
+        if request.session['access_token'] == True:
+            message = 'El token se ha enviado a Telegram, es válido sólo por 3 minutos'
+            t= 'envio.html'
+            form = TokenForm(request.POST)
+            if request.method == 'GET':
+                return render(request, t, { 'message': message,'form':form })
+            elif request.method == 'POST':
+                if form.is_valid():
+                    print('El formulario es válido')
+                    token = request.POST['token']
+                    username = request.session['user']
+                    if es_token_valido(username, token):
+                        request.session['access_token'] = False
+                        request.session['Logueado'] = True
+                        return redirect('/home/')
+                    else:
+                        request.session.flush()
+                        return redirect('/')
+        else: 
+            return redirect('/home')
+    except Exception as e:
+        return redirect('/home')
 
 def enviar_formulario(request):
     """
@@ -194,28 +196,34 @@ def enviar_formulario(request):
         request --
         returns: HTTP_Response
     """
-    message = ''
-    t = 'envio.html'
-    form = LoginForm(request.POST)
-    if request.method == 'GET':
-        return render(request, t, { 'form': form })
-        
-    elif request.method == 'POST':
-        if form.is_valid():
-            username = request.POST['usuario']
-            password = request.POST['password']
-            if puede_hacer_peticion(get_client_ip(request)):
-                is_user = es_usuario_registrado(username, password)
-                if is_user is not False:
-                    request.session['access_token'] = True
-                    request.session['user'] = username
-                    token = get_token(username)
-                    return redirect('/token/')
+    try:
+        if request.session['Logueado'] == True:
+            return redirect('/home')
+    except Exception as e:
+            
+        request.session.flush()
+        message = ''
+        t = 'envio.html'
+        form = LoginForm(request.POST)
+        if request.method == 'GET':
+            return render(request, t, { 'form': form })
+            
+        elif request.method == 'POST':
+            if form.is_valid():
+                username = request.POST['usuario']
+                password = request.POST['password']
+                if puede_hacer_peticion(get_client_ip(request)):
+                    is_user = es_usuario_registrado(username, password)
+                    if is_user is not False:
+                        request.session['access_token'] = True
+                        request.session['user'] = username
+                        token = get_token(username)
+                        return redirect('/token/')
+                    else:
+                        message = "Tu usuario y/o contraseña es incorrecto"
                 else:
-                    message = "Tu usuario y/o contraseña es incorrecto"
-            else:
-                message = "Intentos agotados"
-    return render(request, t, { 'message': message, 'form': form})
+                    message = "Intentos agotados"
+        return render(request, t, { 'message': message, 'form': form})
         
 
 def validar_contraseña(password):
@@ -259,9 +267,11 @@ def logout(request):
     return redirect('/')
 
 def home(request):
-    request.session['access_token'] = False
-    if request.session['Logueado'] == True:
-        t = 'home.html'
-        return render(request, t)
-    else:
+    try:
+        if request.session['Logueado'] == True:
+            t = 'home.html'
+            return render(request, t)
+        else:
+            return redirect('/')
+    except Exception as e:
         return redirect('/')

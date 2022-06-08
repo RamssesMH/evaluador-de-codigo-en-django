@@ -14,7 +14,7 @@ services:
       DATABASE_PASSWORD: ${DATABASE_PASSWORD}
     image: analizador:1.0
     restart: always
-    container_name: app
+    container_name: app-A
     volumes:
       - ./app/proyectoPrograSegura:/app
     depends_on:
@@ -54,8 +54,8 @@ services:
     depends_on:
       - app
     ports:
-      - 80:80
-      - 443:443
+      - 8000:80
+      - 4343:443
     deploy:
       resources:
         limits:
