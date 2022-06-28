@@ -224,21 +224,31 @@ def enviar_formulario(request):
                 else:
                     message = "Intentos agotados"
         return render(request, t, { 'message': message, 'form': form})
+
+def separar_usuarios(usuario, hasheado, token_telegram, id_chat, tipo_usuario):
+    if tipo_usuario == 'maestro':
+        registro_maestro=models.Maestros(usuario=usuario, password=hasheado, token_telegram=token_telegram, chat_id=id_chat)
+        registro_maestro.save()
+    elif tipo_usuario == 'alumno':
+        registro_alumno=models.Alumnos(usuario=usuario, password=hasheado, token_telegram=token_telegram, chat_id=id_chat)
+        registro_alumno.save()  
+
 def validar_contraseña(password):
     regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!#%*?&-_]{10,}$"
     if re.search(regex, password) is not None:
         return True
     return False
 def registro_usuarios(request):
-    t = 'envio.html'
+    t = 'registro.html'
     form = RegistroForm(request.POST)
     if request.method == "GET":
         return render(request, t, {'form': form})
     elif request.method == "POST":
         usuario=request.POST['usuario']
         password=request.POST['password']
-        token_telegram = request.POST['token_telegram']
+        token_telegram = request.POST['token']
         id_chat = request.POST['id_chat']
+        tipo_usuario = request.POST['tipo_usuario']
         if usuario == "":
             message = "Todos los campos son requeridos"
             return render(request, t, { 'message': message, 'form': form})
@@ -251,9 +261,10 @@ def registro_usuarios(request):
         bytes_aleatorios = os.urandom(16)
         salt = base64.b64encode(bytes_aleatorios).decode('utf-8')
         hasheado = crypt.crypt(password, '$6$' + salt)
-        registro_user=models.registro_usuarios(usuario=usuario, password=hasheado, token_telegram=token_telegram, chat_id=id_chat)
+        registro_user=models.registro_usuarios(usuario=usuario, password=hasheado, token_telegram=token_telegram, chat_id=id_chat, tipo_usuario=tipo_usuario)
         registro_user.save()
-        return redirect('/')
+        separar_usuarios(usuario, hasheado, token_telegram, id_chat, tipo_usuario)
+        return redirect('/')  
 
 def logout(request):
     request.session['Logueado'] = False

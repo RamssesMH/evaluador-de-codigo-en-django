@@ -2,6 +2,38 @@
 {% block titulo %}Analizador de código{% endblock %}
 {% block encabezado %}HOME{% endblock %}
 {% block contenido %}
-<strong>Estás en el HOME</strong>
+<div>
+<nav class="navbar navbar-inverse" role="navigation">
+    <div class="container-fluid">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>                        
+        </button>
+        <div class="navbar-brand">Sistema de evaluación de codigo</div>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+          <li><a href="#">Descripción</a></li>
+          <li><a href="#">Entrada de prueba</a></li>
+          <li><a href="#">Salida esperada</a></li>
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Archivos<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#">Page 1-1</a></li>
+              <li><a href="#">Page 1-2</a></li>
+              <li><a href="#">Page 1-3</a></li>
+            </ul>
+          </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+          <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</div>
 
 {% endblock %}
