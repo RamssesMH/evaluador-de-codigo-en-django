@@ -224,14 +224,11 @@ def enviar_formulario(request):
                 else:
                     message = "Intentos agotados"
         return render(request, t, { 'message': message, 'form': form})
-        
-
 def validar_contraseña(password):
     regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!#%*?&-_]{10,}$"
     if re.search(regex, password) is not None:
         return True
     return False
-
 def registro_usuarios(request):
     t = 'envio.html'
     form = RegistroForm(request.POST)
@@ -257,8 +254,6 @@ def registro_usuarios(request):
         registro_user=models.registro_usuarios(usuario=usuario, password=hasheado, token_telegram=token_telegram, chat_id=id_chat)
         registro_user.save()
         return redirect('/')
-    
-
 
 def logout(request):
     request.session['Logueado'] = False
@@ -266,12 +261,3 @@ def logout(request):
     request.session.flush()
     return redirect('/')
 
-def home(request):
-    try:
-        if request.session['Logueado'] == True:
-            t = 'home.html'
-            return render(request, t)
-        else:
-            return redirect('/')
-    except Exception as e:
-        return redirect('/')

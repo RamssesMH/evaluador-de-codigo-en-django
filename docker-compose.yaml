@@ -19,7 +19,6 @@ services:
     volumes:
       - ./app/proyectoPrograSegura:/app
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /sys/fs/cgroup/:/sys/fs/cgroup:ro
     depends_on:
       - bd
     deploy:

@@ -17,3 +17,15 @@ class token_login(models.Model):
     token = models.CharField(max_length=5, unique=True)
     id_usuario = models.BigIntegerField()
     timestamp = models.DateTimeField()
+
+class tarea(models.Model):
+    nombre = models.CharField(max_length=40)
+    id_usuario = models.BigIntegerField()
+    id_grupo = models.BigIntegerField()
+
+class grupo(models.Model):
+    nombre = models.CharField(max_length=50)
+
+class entregadas(models.Model):
+    id_usuario = models.BigIntegerField()
+    calificacion = models.IntegerField()
