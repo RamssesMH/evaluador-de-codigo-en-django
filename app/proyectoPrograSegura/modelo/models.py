@@ -12,7 +12,21 @@ class registro_usuarios(models.Model):
     password = models.CharField(max_length=128, default="")
     token_telegram = models.CharField(max_length=50, default="")
     chat_id = models.CharField(max_length=20, default="")
+    tipo_usuario = models.CharField(max_length=15, default="")
 
+class Maestros(models.Model):
+    usuario = models.CharField(max_length=20, default="", unique=True)
+    password = models.CharField(max_length=128, default="")
+    token_telegram = models.CharField(max_length=50, default="")
+    chat_id = models.CharField(max_length=20, default="")
+
+class Alumnos(models.Model):
+    usuario = models.CharField(max_length=20, default="", unique=True)
+    password = models.CharField(max_length=128, default="")
+    token_telegram = models.CharField(max_length=50, default="")
+    chat_id = models.CharField(max_length=20, default="")
+    tipo_usuario = models.CharField(max_length=15, default="")
+    
 class token_login(models.Model):
     token = models.CharField(max_length=5, unique=True)
     id_usuario = models.BigIntegerField()
