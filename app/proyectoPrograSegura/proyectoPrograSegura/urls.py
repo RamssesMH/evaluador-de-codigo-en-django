@@ -17,15 +17,26 @@ from django.contrib import admin
 from django.urls import path
 import proyectoPrograSegura.views as vistas
 import validadorCodigo.views as vistas_analizador
+<<<<<<< HEAD
 import tareas.views as vistas_t
+=======
+import tareas.views as vistas_tareas
+
+>>>>>>> 98b20aa7d815d14eea1df4f3ab197e7cc118376e
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', vistas.enviar_formulario),
     path('token/', vistas.enviar_token),
     path('registro/', vistas.registro_usuarios),
     path('logout/', vistas.logout),
+<<<<<<< HEAD
     # path('home/', vistas.home),
     path('home/', vistas_analizador.home),
     path('subir_tarea/', vistas_t.subir_tarea),
+=======
+    path('home/', vistas_analizador.home),
+    # path('grupo/', vistas.crear_grupo)
+    path('crearTarea/', vistas_tareas.crear_tarea),
+>>>>>>> 98b20aa7d815d14eea1df4f3ab197e7cc118376e
     
 ]
