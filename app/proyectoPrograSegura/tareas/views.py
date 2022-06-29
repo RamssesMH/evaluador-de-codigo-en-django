@@ -1,6 +1,6 @@
-<<<<<<< HEAD
 from django.template import Template, Context
 from modelo import models
+from tareas.form import crearTareaForm
 from django.shortcuts import render, redirect
 
 # Create your views here.
@@ -12,25 +12,18 @@ def subir_tarea(request):
         uploadedFile = request.FILES["uploadedFile"]
 
         # Saving the information in the database
-        document = models.tarea(
+        document = models.Tarea(
             nombre = fileTitle,
             uploadedFile = uploadedFile
-            id_usuario = "3"
-            id_grupo = "1"
+
         )
         document.save()
 
-    documents = models.tarea.objects.all()
+    documents = models.Tarea.objects.all()
 
     return render(request, t, context = {
         "files": documents
     })
-=======
-from tareas.form import crearTareaForm
-from django.shortcuts import render, redirect
-
-from requests import request
-from modelo import models
 
 # Create your views here.
 
@@ -60,4 +53,3 @@ def crear_tarea(request):
     except Exception as e:
         print(e)
         return redirect('/')
->>>>>>> 98b20aa7d815d14eea1df4f3ab197e7cc118376e
