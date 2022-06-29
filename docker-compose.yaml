@@ -17,6 +17,7 @@ services:
     restart: always
     container_name: app-A
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - ./app/proyectoPrograSegura:/app
       - /var/run/docker.sock:/var/run/docker.sock:ro
     depends_on:
@@ -38,6 +39,7 @@ services:
       MYSQL_DATABASE: analizador
       MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD}
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - ./data:/var/lib/mysql
     deploy:
       resources:
@@ -49,6 +51,7 @@ services:
     image: nginx
     restart: always
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - ./config/nginx/conf.d:/etc/nginx/conf.d
       - ./config/certs:/tmp
       - ./config/nginx.conf:/etc/nginx/nginx.conf:ro

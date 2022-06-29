@@ -9,6 +9,10 @@
 <form id="form" method="POST" action="">
     {% csrf_token %}
     <div class="mb-3 mt-3">
+      <label for="mensaje" class="form-label">Nombre</label>
+      <input type="text" class="form-control" id="nombre" placeholder="Nombre" name="nombre">
+      <label for="mensaje" class="form-label">Apellidos</label>
+      <input type="text" class="form-control" id="apellidos" placeholder="Apellidos" name="apellidos">
       <label for="mensaje" class="form-label">Nombre de usuario</label>
       <input type="text" class="form-control" id="usuario" placeholder="Usuario" name="usuario">
       <label for="mensaje" class="form-label">Contraseña:</label>
