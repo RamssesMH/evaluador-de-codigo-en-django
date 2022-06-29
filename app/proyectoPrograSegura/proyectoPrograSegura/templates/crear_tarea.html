@@ -6,13 +6,13 @@
 <strong>{{ message }}</strong>
 {% endif %}
 
-<form method="POST" action="">
+<form method="POST" action="" enctype="multipart/form-data">
   {% csrf_token %}
   <div class="mb-3 mt-3">
     {{ form.as_p }}
   </div>
   <input type="file" name="script_comprobacion">
-  <input type="file" name="script_icializacion">
+  <input type="file" name="script_inicializacion">
   <input type="file" name="script_parametros">
   <div class="mb-3 mt-3">
     <input type="submit" value="Ingresar"/>

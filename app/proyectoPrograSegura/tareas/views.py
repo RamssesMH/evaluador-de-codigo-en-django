@@ -1,8 +1,29 @@
+from django.template import Template, Context
+from modelo import models
 from tareas.form import crearTareaForm
 from django.shortcuts import render, redirect
 
-from requests import request
-from modelo import models
+# Create your views here.
+def subir_tarea(request):
+    t = 'subir_tarea.html'
+    if request.method == "POST":
+        # Fetching the form data
+        fileTitle = request.POST["fileTitle"]
+        uploadedFile = request.FILES["uploadedFile"]
+
+        # Saving the information in the database
+        document = models.Tarea(
+            nombre = fileTitle,
+            uploadedFile = uploadedFile
+
+        )
+        document.save()
+
+    documents = models.Tarea.objects.all()
+
+    return render(request, t, context = {
+        "files": documents
+    })
 
 # Create your views here.
 
@@ -21,8 +42,20 @@ def crear_tarea(request):
                     descripcion = request.POST['descripcion']
                     grupo = models.Grupo.objects.get(id=1)
                     maestro = models.Maestro.objects.get(usuario=request.session['user'])
-                    tarea = models.Tarea(nombre=nombre, descripcion=descripcion, grupo=grupo, maestro=maestro)
+                    script_comprobacion = request.FILES["script_comprobacion"]
+                    script_parametros = request.FILES["script_parametros"]
+                    script_inicializacion = request.FILES["script_inicializacion"]
+                    tarea = models.Tarea(
+                        nombre=nombre,
+                        descripcion=descripcion,
+                        grupo=grupo,
+                        maestro=maestro,
+                        script_comprobacion=script_comprobacion,
+                        script_parametros=script_parametros,
+                        script_inicializacion=script_inicializacion
+                    )
                     tarea.save()
+                    
                     return redirect('/crearTarea/')
             
         else:

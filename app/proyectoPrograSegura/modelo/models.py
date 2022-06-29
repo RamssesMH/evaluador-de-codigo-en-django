@@ -45,15 +45,21 @@ class token_login(models.Model):
     timestamp = models.DateTimeField()
 
 class Tarea(models.Model):
-    nombre = models.CharField(max_length=40)
+    nombre = models.CharField(max_length=40,default="")
     descripcion = models.CharField(max_length=400,default="")
     grupo = models.ForeignKey(Grupo, on_delete=models.CASCADE, default="")
     maestro = models.ForeignKey(Maestro, on_delete=models.CASCADE, default="")
+    script_comprobacion = models.FileField(upload_to = "media/tareas/", default="")
+    script_inicializacion = models.FileField(upload_to = "media/tareas/", default="")
+    script_parametros = models.FileField(upload_to = "media/tareas/", default="")
 
 
 
 class Entregada(models.Model):
     usuario = models.ForeignKey(Alumno, on_delete=models.CASCADE, default="")
     calificacion = models.IntegerField()
+    nombre = models.CharField(max_length=40,default="")
+    uploadedFile = models.FileField(upload_to = "tareas-de-alumnos/",default="")
+    dateTimeOfUpload = models.DateTimeField(auto_now = True)
 
     # 1237694558    5561606760:AAE6Bk1j4_vo-lvR_AZ--8jWz9TL2lo_zSA
