@@ -20,10 +20,8 @@ def crear_tarea(request):
                     nombre = request.POST['nombre']
                     descripcion = request.POST['descripcion']
                     grupo = models.Grupo.objects.get(id=1)
-                    maestro = models.Grupo.objects.get(usuario=request.session['user'])
-                    print(request.session['user'])
+                    maestro = models.Maestro.objects.get(usuario=request.session['user'])
                     tarea = models.Tarea(nombre=nombre, descripcion=descripcion, grupo=grupo, maestro=maestro)
-                    print(tarea)
                     tarea.save()
                     return redirect('/crearTarea/')
             
