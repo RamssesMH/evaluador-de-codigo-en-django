@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 import proyectoPrograSegura.views as vistas
+import validadorCodigo.views as vistas_analizador
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -23,5 +24,7 @@ urlpatterns = [
     path('token/', vistas.enviar_token),
     path('registro/', vistas.registro_usuarios),
     path('logout/', vistas.logout),
-    path('home/', vistas.home),
+    # path('home/', vistas.home),
+    path('home/', vistas_analizador.home)
+    
 ]

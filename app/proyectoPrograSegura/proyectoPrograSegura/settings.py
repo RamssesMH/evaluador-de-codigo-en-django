@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'modelo',
+    'tareas',
+    'validadorCodigo'
 ]
 
 MIDDLEWARE = [
@@ -134,3 +136,4 @@ VENTANA_SEGUNDOS_INTENTOS_PETICION = 60
 INTENTOS_TOKEN_SEGUNDOS = 180
 SESSION_COOKIE_AGE = 3600
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_SECURE = True
