@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 # Create your views here.
 def subir_tarea(request):
     t = 'subir_tarea.html'
+    usuario= request.session['user']
     if request.method == "POST":
         # Fetching the form data
         fileTitle = request.POST["fileTitle"]
@@ -13,6 +14,7 @@ def subir_tarea(request):
 
         # Saving the information in the database
         document = models.Tarea(
+
             nombre = fileTitle,
             uploadedFile = uploadedFile
 
