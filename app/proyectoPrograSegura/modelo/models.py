@@ -36,6 +36,8 @@ class tarea(models.Model):
     nombre = models.CharField(max_length=40)
     id_usuario = models.BigIntegerField()
     id_grupo = models.BigIntegerField()
+    uploadedFile = models.FileField(upload_to = "tareas-de-alumnos/")
+    dateTimeOfUpload = models.DateTimeField(auto_now = True)
 
 class grupo(models.Model):
     nombre = models.CharField(max_length=50)

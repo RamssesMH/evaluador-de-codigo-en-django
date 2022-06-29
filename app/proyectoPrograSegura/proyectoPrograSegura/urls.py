@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 import proyectoPrograSegura.views as vistas
 import validadorCodigo.views as vistas_analizador
-
+import tareas.views as vistas_t
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', vistas.enviar_formulario),
@@ -25,6 +25,7 @@ urlpatterns = [
     path('registro/', vistas.registro_usuarios),
     path('logout/', vistas.logout),
     # path('home/', vistas.home),
-    path('home/', vistas_analizador.home)
+    path('home/', vistas_analizador.home),
+    path('subir_tarea/', vistas_t.subir_tarea),
     
 ]
