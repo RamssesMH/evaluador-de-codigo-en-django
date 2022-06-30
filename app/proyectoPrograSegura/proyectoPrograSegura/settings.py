@@ -16,7 +16,7 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-CSRF_TRUSTED_ORIGINS = ['https://analizador.uv:4343','https://analizador.uv', 'https://05b0-201-105-137-130.ngrok.io']
+CSRF_TRUSTED_ORIGINS = ['https://analizador.uv:4343','https://analizador.uv', 'https://48f0-2806-2f0-7081-eba9-9c4c-27bd-1053-b33d.ngrok.io']
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 

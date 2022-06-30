@@ -1,17 +1,25 @@
-from django.shortcuts import render, redirect
-from requests import request
 from proyectoPrograSegura.form import LoginForm, TokenForm, RegistroForm, GrupoForm
+from django.shortcuts import render, redirect
 import proyectoPrograSegura.settings as conf
+from requests import request
+from datetime import timezone
+from datetime import datetime
 from modelo import models
 import datetime
-from datetime import timezone
 import requests
-import crypt
-import os
 import base64
-import re
 import string
 import random
+import logging
+import os
+import re
+import crypt
+
+logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s',
+                    datefmt='%d-%b-%y %H:%M:%S',
+                    level=logging.INFO,
+                    filename='logs/app.log',
+                    filemode='a')
 
 def mandar_mensaje_bot(mensaje, token, chat_id):
     """
@@ -202,9 +210,11 @@ def enviar_token(request):
                         request.session['tipo_usuario'] = tipo_usuario
                         request.session['access_token'] = False
                         request.session['Logueado'] = True
+                        logging.info(f'El usuario ha accedido correctamente {username}')
                         return redirect('/home/')
                     else:
                         request.session.flush()
+                        logging.warning(f'El usuario ha fallado la autenticacion de token {username}')
                         return redirect('/')
         else: 
             return redirect('/home/')
@@ -243,6 +253,8 @@ def enviar_formulario(request):
                         return redirect('/token/')
                     else:
                         message = "Tu usuario y/o contraseña es incorrecto"
+                        logging.warning(f'El usuario ha fallado la autenticacion usuario y contraseña {username}')
+
                 else:
                     message = "Intentos agotados"
         return render(request, t, { 'message': message, 'form': form})
@@ -325,6 +337,7 @@ def registro_usuarios(request):
                                                 chat_id=id_chat, 
                                                 tipo_usuario=tipo_usuario)
         registro_user.save()
+        logging.info(f'El usuario ha fallado la autenticacion usuario y contraseña {usuario}')
         separar_usuarios(nombre, apellidos, grupo, usuario, hasheado, token_telegram, id_chat, tipo_usuario)
         return redirect('/')
 
@@ -356,6 +369,8 @@ def logout(request):
     """
     request.session['Logueado'] = False
     request.session['access_token'] = False
+    user = request.session['user']
+    logging.info(f'El usuario ha salido correctamente {user}')
     request.session.flush()
     return redirect('/')
 

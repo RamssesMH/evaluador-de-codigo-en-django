@@ -1,8 +1,16 @@
-from modelo import models
-from tareas.form import crearTareaForm
 from django.shortcuts import render, redirect
-import os
+from tareas.form import crearTareaForm
+from datetime import datetime
+from modelo import models
 import subprocess
+import logging
+import os
+
+logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s',
+                    datefmt='%d-%b-%y %H:%M:%S',
+                    level=logging.INFO,
+                    filename='logs/app.log',
+                    filemode='a')
 
 def crear_dockerfile(path): 
     """
@@ -83,6 +91,7 @@ def subir_tarea(request):
                 calif = models.Entregada.objects.get(id=document.id)
                 calif.calificacion = calificacion
                 calif.save()
+                logging.info(f'El usuario ha subido una tarea {calif.usuario}')
             return render(request, t, context = {
             "files": documents
             })
@@ -124,6 +133,7 @@ def crear_tarea(request):
                             script_inicializacion=script_inicializacion
                         )
                         tarea.save()
+                        logging.info(f'El usuario ha creado una tarea {tarea.nombre}')
                         return redirect('/crearTarea/')
             else:
                 return redirect('/home')

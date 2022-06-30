@@ -10,6 +10,7 @@ def ejecutar_iniciar(script):
     except subprocess.TimeoutExpired:
         iniciar.kill()
         outs, errs = iniciar.communicate()
+        print ('0')
         exit(1)
     vari = iniciar.returncode
     if vari==0:
@@ -24,6 +25,7 @@ def ejecutar_parametros(script):
     except subprocess.TimeoutExpired:
         parametros.kill()
         outs, errs = parametros.communicate()
+        print ('0')
         exit(1)
     vari = parametros.returncode
     if vari==0:
@@ -38,6 +40,7 @@ def ejecutar_comprobar(script):
     except subprocess.TimeoutExpired:
         comprobar.kill()
         outs, errs = comprobar.communicate()
+        print ('0')
         exit(1)
     vari = comprobar.returncode
     if vari==0:
