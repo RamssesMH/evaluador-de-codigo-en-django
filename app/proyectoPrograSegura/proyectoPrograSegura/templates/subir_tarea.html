@@ -1,6 +1,17 @@
 {% extends 'base.html' %}
 {% block titulo %}Analizador de código{% endblock %}
 {% block encabezado %}Lista de tareas{% endblock %}
+{% block contenido1 %}
+<div>
+  <div class="container-fluid">
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+          <li><a href="/">Regresar</a></li>
+        </ul>
+      </div>
+    </div>
+</div>
+{% endblock %}
 {% block contenido %}
 {% if message %}
 <strong>Lista de tareas</strong>
