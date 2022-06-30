@@ -5,27 +5,34 @@ from django.shortcuts import render, redirect
 
 # Create your views here.
 def subir_tarea(request):
+
+
     t = 'subir_tarea.html'
-    usuario= request.session['user']
+    alumno = models.Alumno.objects.get(usuario=request.session['user'])
     if request.method == "POST":
+        
         # Fetching the form data
-        fileTitle = request.POST["fileTitle"]
         uploadedFile = request.FILES["uploadedFile"]
-
+        nombre = request.POST['nombreTarea']
+        
+                
         # Saving the information in the database
-        document = models.Tarea(
-
-            nombre = fileTitle,
+        document = models.Entregada(
+                    
+            usuario = alumno,
+            nombre = nombre,
             uploadedFile = uploadedFile
 
         )
         document.save()
-
+                
     documents = models.Tarea.objects.all()
 
     return render(request, t, context = {
-        "files": documents
+    "files": documents
     })
+
+
 
 # Create your views here.
 

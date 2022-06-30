@@ -8,6 +8,16 @@ def directorio_archivo(instance, archivo):
     nombre_directorio = tarea + str(fecha)
     return 'media/{0}/{1}'.format(nombre_directorio, archivo)
 
+def directorio_tarea(instance, archivo):
+    tarea = str(instance.id)
+    tarea2 = str(instance.usuario_id)
+    fecha = datetime.date.today()
+    nombre_directorio = tarea+"-"+tarea2+"-" + str(fecha)
+    return 'tarea-subida/{0}/{1}'.format(nombre_directorio, archivo)
+
+
+
+
 # Create your models here.
 class Peticion(models.Model):
     ip = models.GenericIPAddressField(unique=True)
@@ -62,9 +72,9 @@ class Tarea(models.Model):
 
 class Entregada(models.Model):
     usuario = models.ForeignKey(Alumno, on_delete=models.CASCADE, default="")
-    calificacion = models.IntegerField()
+    calificacion = models.IntegerField(default=00)
     nombre = models.CharField(max_length=40,default="")
-    uploadedFile = models.FileField(upload_to="irectorio_archivoe-alumnos/",default="")
+    uploadedFile = models.FileField(upload_to=directorio_tarea,default="")
     dateTimeOfUpload = models.DateTimeField(auto_now = True)
 
     # 1237694558    5561606760:AAE6Bk1j4_vo-lvR_AZ--8jWz9TL2lo_zSA
