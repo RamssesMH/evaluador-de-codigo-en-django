@@ -1,62 +1,70 @@
-<!DOCTYPE html>
-{% load static %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Django File Upload</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+{% extends 'base.html' %}
+{% block titulo %}Analizador de código{% endblock %}
+{% block encabezado %}Lista de tareas{% endblock %}
+{% block contenido %}
+{% if message %}
+<strong>Lista de tareas</strong>
+{% endif %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
-        * {
-            font-family: "Roboto";
-        }
+    * {
+        font-family: "Roboto";
+    }
 
-        body {
-            background-color: #F5F5F5;
-        }
+    body {
+        background-color: #F5F5F5;
+    }
 
-        form {
-            background-color: #FFFFFF;
-            padding: 25px;
-        }
+    form {
+        background-color: #FFFFFF;
+        padding: 25px;
+    }
 
-        table {
-            width: 100%;
-            text-align: center;
-            margin-top: 25px;
-            padding: 25px;
-            background-color: #FFFFFF;
-        }
+    table {
+        width: 100%;
+        text-align: center;
+        margin-top: 25px;
+        padding: 25px;
+        background-color: #FFFFFF;
+    }
 
-        table tr td {
-            padding-top: 15px;
-        }
-    </style>
-</head>
-<body>
-    <form action="" method="POST" enctype="multipart/form-data">
-        <input type="text" name="fileTitle" placeholder="Enter a title">
-        <input type="file" name="uploadedFile">
-        {% csrf_token %}
-        <input type="submit" value="Upload">
-    </form>
+    table tr td {
+        padding-top: 15px;
+    }
+</style>
+
+
+
+
     <table>
         <tr>
-            <th>ID</th>
-            <th>Title</th>
-            <th>File Path</th>
-            <th>Upload Date & Time</th>
+            <th>Nombre del ejercicio</th>
+            <th>Descripcion</th>
+            <th>Maestro</th>
+            <th>Entregar tarea</th>
         </tr>
         {% for file in files %}
             <tr>
-                <td>{{ file.id }}</td>
-                <td>{{ file.title }}</td>
-                <td>{{ file.uploadedFile.url }}</td>
-                <td>{{ file.dateTimeOfUpload }}</td>
+                
+                <td>{{ file.nombre }}</td>
+                <td>{{ file.descripcion }}</td>
+                <td>{{ file.maestro }}</td>
+                <td>
+                <form method="POST" action="" enctype="multipart/form-data">
+                    {% csrf_token %}
+                      {{ form.as_p }}
+                    <input type="file" name="uploadedFile" required >
+                    <input name="nombreTarea" type="hidden" value= "{{ file.id }}" > 
+                      <input type="submit" value="Ingresar"/>
+                    </form>
+                  
+                  </td>
             </tr>
         {% endfor %}
+    
     </table>
-</body>
-</html>
+{% endblock %}
+
+
+
