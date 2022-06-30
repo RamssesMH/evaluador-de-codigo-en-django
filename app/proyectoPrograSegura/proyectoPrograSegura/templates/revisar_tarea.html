@@ -30,18 +30,20 @@
 
     <table>
     <tr>
-        <th>USUARIO</th>
         <th>NOMBRE</th>
+        <th>ID TAREA</th>
         <th>CALIFICACIÓN</th>
-        <th>dateTimeOfUpload</th>
+        <th>HHORA DE ENTREGA</th>
     </tr>
-    {% for tarea in tareas_entregadas %}
+    {% for tarea in tareas  %}
+    {% for alumno in alumnos  %}
         <tr>
-            <td>{{ tarea.usuario }}</td>
+            <td>{{ alumno.nombre }} {{alumno.apellidos}}</td>
             <td>{{ tarea.nombre }}</td>
             <td>{{ tarea.calificacion }}</td>
             <td>{{ tarea.dateTimeOfUpload }}</td>
         </tr>
+    {% endfor %}
     {% endfor %}
     </table>
 </div>
