@@ -52,7 +52,6 @@
         <tr>
             <th>Nombre del ejercicio</th>
             <th>Descripcion</th>
-            <th>Maestro</th>
             <th>Entregar tarea</th>
         </tr>
         {% for file in files %}
@@ -60,14 +59,13 @@
                 
                 <td>{{ file.nombre }}</td>
                 <td>{{ file.descripcion }}</td>
-                <td>{{ file.maestro }}</td>
                 <td>
                 <form method="POST" action="" enctype="multipart/form-data">
                     {% csrf_token %}
                       {{ form.as_p }}
                     <input type="file" name="uploadedFile" required >
                     <input name="nombreTarea" type="hidden" value= "{{ file.id }}" > 
-                      <input type="submit" value="Ingresar"/>
+                      <td><input type="submit" value="Ingresar"/></td>
                     </form>
                   
                   </td>

@@ -17,6 +17,7 @@ def subir_tarea(request):
                 "files": documents
                 })
             elif request.method == "POST":
+                
                 uploadedFile = request.FILES["uploadedFile"]
                 nombre = request.POST['nombreTarea']
                 tarea = models.Tarea.objects.get(id=nombre)
@@ -102,8 +103,13 @@ def crear_tarea(request):
         return redirect('/')
 
 def revisar_tarea(request):
-    t = 'revisar_tarea.html'
-    tareas_entregadas = models.Entregada.objects.all()
-    return render(request, t, context = {
-    "tareas": tareas_entregadas
-    }) 
+    if request.session['Logueado'] == True:
+        if request.session['tipo_usuario'] == "maestro":
+            t = 'revisar_tarea.html'
+            tareas_entregadas = models.Entregada.objects.all()
+            alumno = models.Alumno.objects.all()
+            return render(request, t, context = {
+            "tareas": tareas_entregadas, "alumnos": alumno
+            })
+    else:
+        return redirect('/home')
