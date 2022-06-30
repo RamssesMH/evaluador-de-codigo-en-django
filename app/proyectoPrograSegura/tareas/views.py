@@ -5,14 +5,31 @@ from django.shortcuts import render, redirect
 import os
 import subprocess
 
+def crear_dockerfile(path):
+    file = path + "/Dockerfile"
+    dockerfile = open(file, 'a+')
+    dockerfile.write('FROM python:3.9\n')
+    dockerfile.write('WORKDIR /usr/src/myapp\n')
+    dockerfile.write('COPY . .\n')
+    dockerfile.write('ENTRYPOINT ["python3"]\n')
+    dockerfile.close()
+
+def ejecutar_tarea(path, nombre):
+    imagen = subprocess.Popen(['docker', 'build', path, '-t', nombre])
+    # iniciar = subprocess.run(['docker', 'run', '--name', nombre, '-it', nombre, 'main.py', '-i', 'iniciar.sh', '-p', 'parametros.sh', '-c', 'comprobar.sh'], capture_output=True)
+    iniciar = subprocess.run(['ls'],stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    print(iniciar)
+    
+    return 1
+
 # Create your views here.
 def subir_tarea(request):
     if request.session['Logueado'] == True:
         if request.session['tipo_usuario'] == "alumno":
             t = 'subir_tarea.html'
+            documents = models.Tarea.objects.all()
             alumno = models.Alumno.objects.get(usuario=request.session['user'])
             if request.method == 'GET':
-                documents = models.Tarea.objects.all()
                 return render(request, t, context = {
                 "files": documents
                 })
@@ -35,9 +52,14 @@ def subir_tarea(request):
                 ruta_final = x[0].strip()+"/"+x[1].strip()+"/"
                 x = ruta_ejer.split('/')
                 ruta_final_ejer = x[0].strip()+"/"+x[1].strip()+"/"
-                comando_completo= "cp "+ruta_final_ejer+" * "+ruta_final
+                comando_completo= "cp "+ruta_final_ejer+"* "+ ruta_final
+                crear_dockerfile(ruta_final)
                 os.system(comando_completo)
-            documents = models.Tarea.objects.all()
+                copiar_script_principal = "cp script_general/* " + ruta_final
+                os.system(copiar_script_principal)
+                nombre_imagen_docker = str(document.id)+"-"+str(document.nombre)
+                calificacion = ejecutar_tarea(ruta_final, nombre_imagen_docker)
+                print("La calificacion es", calificacion)
             return render(request, t, context = {
             "files": documents
             })
@@ -46,17 +68,7 @@ def subir_tarea(request):
     else:
         return redirect('/')
 
-def crear_dockerfile(id_tarea):
-    path_comprobacion = models.Tarea.objects.get(id=id_tarea).script_comprobacion
-    directorios = str(path_comprobacion).split('/')
-    path = directorios[0]+"/"+directorios[1]
-    file = path + "/Dockerfile"
-    dockerfile = open(file, 'a+')
-    dockerfile.write('FROM python:3.9\n')
-    dockerfile.write('WORKDIR /usr/src/myapp\n')
-    dockerfile.write('COPY . .\n')
-    dockerfile.write('ENTRYPOINT ["python3"]\n')
-    dockerfile.close()
+
     
 
 def es_ejecucion_segura(id_tarea):
