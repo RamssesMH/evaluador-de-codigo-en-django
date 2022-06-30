@@ -2,6 +2,8 @@ from django.template import Template, Context
 from modelo import models
 from tareas.form import crearTareaForm
 from django.shortcuts import render, redirect
+import os
+import subprocess
 
 # Create your views here.
 def subir_tarea(request):
@@ -27,7 +29,27 @@ def subir_tarea(request):
         "files": documents
     })
 
-# Create your views here.
+def crear_dockerfile(id_tarea):
+    path_comprobacion = models.Tarea.objects.get(id=id_tarea).script_comprobacion
+    directorios = str(path_comprobacion).split('/')
+    path = directorios[0]+"/"+directorios[1]
+    file = path + "/Dockerfile"
+    dockerfile = open(file, 'a+')
+    dockerfile.write('FROM python:3.9\n')
+    dockerfile.write('WORKDIR /usr/src/myapp\n')
+    dockerfile.write('COPY . .\n')
+    dockerfile.write('ENTRYPOINT ["python3"]\n')
+    dockerfile.close()
+    
+
+def es_ejecucion_segura(id_tarea):
+    path_comprobacion = models.Tarea.objects.get(id=id_tarea).script_comprobacion
+    directorios = str(path_comprobacion).split('/')
+    path = directorios[0]+"/"+directorios[1]
+    file = path + "/Dockerfile"
+    imagen = subprocess.Popen(['docker','build', path, '-t', 'python9'])
+
+
 
 def crear_tarea(request):
     try:
@@ -57,7 +79,8 @@ def crear_tarea(request):
                         script_inicializacion=script_inicializacion
                     )
                     tarea.save()
-                    
+                    crear_dockerfile(tarea.id)
+                    es_ejecucion_segura(tarea.id)
                     return redirect('/crearTarea/')
             
         else:
