@@ -1,8 +1,13 @@
 from enum import unique
 from django.db import models
-# def obtener_grupo():
-#     grupo = Grupo.objects.get(id=1)
-#     return grupo
+import datetime
+
+def directorio_archivo(instance, archivo):
+    tarea = str(instance.nombre).lower().replace(" ", "_").strip()
+    fecha = datetime.date.today()
+    nombre_directorio = tarea + str(fecha)
+    return 'media/{0}/{1}'.format(nombre_directorio, archivo)
+
 # Create your models here.
 class Peticion(models.Model):
     ip = models.GenericIPAddressField(unique=True)
@@ -49,9 +54,9 @@ class Tarea(models.Model):
     descripcion = models.CharField(max_length=400,default="")
     grupo = models.ForeignKey(Grupo, on_delete=models.CASCADE, default="")
     maestro = models.ForeignKey(Maestro, on_delete=models.CASCADE, default="")
-    script_comprobacion = models.FileField(upload_to = "media/tareas/", default="")
-    script_inicializacion = models.FileField(upload_to = "media/tareas/", default="")
-    script_parametros = models.FileField(upload_to = "media/tareas/", default="")
+    script_comprobacion = models.FileField(upload_to =directorio_archivo, default="")
+    script_inicializacion = models.FileField(upload_to =directorio_archivo, default="")
+    script_parametros = models.FileField(upload_to =directorio_archivo, default="")
 
 
 
@@ -59,7 +64,7 @@ class Entregada(models.Model):
     usuario = models.ForeignKey(Alumno, on_delete=models.CASCADE, default="")
     calificacion = models.IntegerField()
     nombre = models.CharField(max_length=40,default="")
-    uploadedFile = models.FileField(upload_to = "tareas-de-alumnos/",default="")
+    uploadedFile = models.FileField(upload_to="irectorio_archivoe-alumnos/",default="")
     dateTimeOfUpload = models.DateTimeField(auto_now = True)
 
     # 1237694558    5561606760:AAE6Bk1j4_vo-lvR_AZ--8jWz9TL2lo_zSA

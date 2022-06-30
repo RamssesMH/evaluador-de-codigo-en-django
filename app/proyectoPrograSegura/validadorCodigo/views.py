@@ -1,5 +1,5 @@
-from django.shortcuts import render
 from django.shortcuts import render, redirect
+from requests import request
 # Create your views here.
 def home(request):
     try:
@@ -10,3 +10,4 @@ def home(request):
             return redirect('/')
     except Exception as e:
         return redirect('/')
+

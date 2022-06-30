@@ -65,3 +65,10 @@ def crear_tarea(request):
     except Exception as e:
         print(e)
         return redirect('/')
+
+def revisar_tarea(request):
+    t = 'revisar_tarea.html'
+    tareas_entregadas = models.Entregada.objects.all()
+    return render(request, t, context = {
+    "tareas": tareas_entregadas
+    }) 
