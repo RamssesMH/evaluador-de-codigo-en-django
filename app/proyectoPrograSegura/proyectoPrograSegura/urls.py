@@ -26,7 +26,7 @@ urlpatterns = [
     path('registro/', vistas.registro_usuarios),
     path('logout/', vistas.logout),
     path('home/', vistas_analizador.home),
-    path('grupo/', vistas.crear_grupo),
+    #path('grupo/', vistas.crear_grupo),
     path('subir_tarea/', vistas_tareas.subir_tarea),
     path('crearTarea/', vistas_tareas.crear_tarea),
     path('revisar_tarea/', vistas_tareas.revisar_tarea),

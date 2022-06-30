@@ -27,13 +27,15 @@
         }
 </style>
 <div class="container-fluid">
-
-    <table>
+    <figure> 
+    <figcaption></figcaption> 
+    <table aria-describedby="mydesc">
+    <caption>
     <tr>
         <th>NOMBRE</th>
         <th>ID TAREA</th>
         <th>CALIFICACIÓN</th>
-        <th>HHORA DE ENTREGA</th>
+        <th>HORA DE ENTREGA</th>
     </tr>
     {% for tarea in tareas  %}
     {% for alumno in alumnos  %}
@@ -45,6 +47,8 @@
         </tr>
     {% endfor %}
     {% endfor %}
+    </caption>
     </table>
+    </figure>
 </div>
 {% endblock %}
