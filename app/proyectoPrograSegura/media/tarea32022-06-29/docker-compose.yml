@@ -1,0 +1,64 @@
+version: "3.7"
+
+services:
+  app:
+    env_file:
+      - app.env
+    environment:
+      SECRET_KEY: ${SECRET_KEY}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+    hostname: sistema_web
+    build: ./ProyectoProgSegura
+    restart: always
+    container_name: evaluador_codigo
+    volumes:
+      - ./ProyectoProgSegura/app/:/app
+    depends_on:
+      - bd
+    networks:
+      red_interna_web:
+        ipv4_address: 192.168.20.30
+  bd:
+    image: mariadb
+    hostname: sistema_bd
+    restart: always
+    env_file:
+      - bd.env
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - ./data:/var/lib/mysql
+    networks:
+      red_interna_web:
+        ipv4_address: 192.168.20.20
+  nginx:
+    image: nginx
+    hostname: servidor_web
+    restart: always
+    volumes:
+      - ./config/nginx/conf.d:/etc/nginx/conf.d
+      - ./config/certificado_evaluador:/tmp
+      - ./config/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ProyectoProgSegura/app/static:/static
+    depends_on:
+      - app
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      red_sistema_web:
+        ipv4_address: 192.168.10.10
+      red_interna_web:
+        ipv4_address: 192.168.20.10
+
+networks:
+  red_sistema_web:
+    ipam:
+      config:
+        - subnet: 192.168.10.0/24
+          gateway: 192.168.10.1
+  red_interna_web:
+    ipam:
+      config:
+        - subnet: 192.168.20.0/24
+          gateway: 192.168.20.1

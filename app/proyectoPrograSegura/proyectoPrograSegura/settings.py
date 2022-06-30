@@ -24,7 +24,7 @@ CSRF_TRUSTED_ORIGINS = ['https://analizador.uv:4343','https://analizador.uv', 'h
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -123,7 +123,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
-
+MEDIA_URL = '/media/'
 STATIC_URL = '/static/'
 
 # Default primary key field type

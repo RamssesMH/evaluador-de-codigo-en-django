@@ -2,7 +2,7 @@ from email import message
 from django.template import RequestContext, Template, Context
 from django.shortcuts import render, redirect
 from requests import request
-from proyectoPrograSegura.form import LoginForm, TokenForm, RegistroForm
+from proyectoPrograSegura.form import LoginForm, TokenForm, RegistroForm, GrupoForm
 import proyectoPrograSegura.settings as conf
 from django.http import HttpResponse
 from modelo import models
@@ -134,6 +134,11 @@ def get_token(username):
     mandar_mensaje_bot(token.token, usuario.token_telegram, usuario.chat_id)
     return digitos
 
+def obtener_tipo_usuario(usuario):
+    usuario = models.registro_usuarios.objects.filter(usuario=usuario).get()
+    tipo_usuario = usuario.tipo_usuario
+    return tipo_usuario
+
 def es_token_valido(username, token):
     """
     Compara si el token es valido de acuerdo a un tiempo de 3 minutos
@@ -145,9 +150,7 @@ def es_token_valido(username, token):
     print('entro a validacion de token')
     try:
         usuario = models.registro_usuarios.objects.filter(usuario=username).get()
-        print(usuario.id)
         tokenGet = models.token_login.objects.filter(id_usuario=usuario.id).get()
-        print(tokenGet)
         momento_actual = datetime.datetime.now(timezone.utc)
         resta = momento_actual - tokenGet.timestamp
         if resta.seconds < conf.INTENTOS_TOKEN_SEGUNDOS:
@@ -174,10 +177,11 @@ def enviar_token(request):
                 return render(request, t, { 'message': message,'form':form })
             elif request.method == 'POST':
                 if form.is_valid():
-                    print('El formulario es válido')
                     token = request.POST['token']
                     username = request.session['user']
                     if es_token_valido(username, token):
+                        tipo_usuario = obtener_tipo_usuario(username)
+                        request.session['tipo_usuario'] = tipo_usuario
                         request.session['access_token'] = False
                         request.session['Logueado'] = True
                         return redirect('/home/')
@@ -185,9 +189,9 @@ def enviar_token(request):
                         request.session.flush()
                         return redirect('/')
         else: 
-            return redirect('/home')
+            return redirect('/home/')
     except Exception as e:
-        return redirect('/home')
+        return redirect('/home/')
 
 def enviar_formulario(request):
     """
@@ -225,12 +229,12 @@ def enviar_formulario(request):
                     message = "Intentos agotados"
         return render(request, t, { 'message': message, 'form': form})
 
-def separar_usuarios(usuario, hasheado, token_telegram, id_chat, tipo_usuario):
+def separar_usuarios(nombre, apellidos, grupo, usuario, hasheado, token_telegram, id_chat, tipo_usuario):
     if tipo_usuario == 'maestro':
-        registro_maestro=models.Maestros(usuario=usuario, password=hasheado, token_telegram=token_telegram, chat_id=id_chat)
+        registro_maestro=models.Maestro(nombre=nombre, apellidos=apellidos, grupo=grupo, usuario=usuario, password=hasheado, token_telegram=token_telegram, chat_id=id_chat)
         registro_maestro.save()
     elif tipo_usuario == 'alumno':
-        registro_alumno=models.Alumnos(usuario=usuario, password=hasheado, token_telegram=token_telegram, chat_id=id_chat)
+        registro_alumno=models.Alumno(nombre=nombre, apellidos=apellidos, grupo=grupo, usuario=usuario, password=hasheado, token_telegram=token_telegram, chat_id=id_chat)
         registro_alumno.save()  
 
 def validar_contraseña(password):
@@ -244,6 +248,8 @@ def registro_usuarios(request):
     if request.method == "GET":
         return render(request, t, {'form': form})
     elif request.method == "POST":
+        nombre = request.POST['nombre']
+        apellidos = request.POST['apellidos']
         usuario=request.POST['usuario']
         password=request.POST['password']
         token_telegram = request.POST['token']
@@ -261,10 +267,25 @@ def registro_usuarios(request):
         bytes_aleatorios = os.urandom(16)
         salt = base64.b64encode(bytes_aleatorios).decode('utf-8')
         hasheado = crypt.crypt(password, '$6$' + salt)
-        registro_user=models.registro_usuarios(usuario=usuario, password=hasheado, token_telegram=token_telegram, chat_id=id_chat, tipo_usuario=tipo_usuario)
+        grupo = models.Grupo.objects.get(id=1)
+        registro_user=models.registro_usuarios(nombre=nombre, apellidos=apellidos, grupo=grupo, usuario=usuario, password=hasheado, token_telegram=token_telegram, chat_id=id_chat, tipo_usuario=tipo_usuario)
         registro_user.save()
-        separar_usuarios(usuario, hasheado, token_telegram, id_chat, tipo_usuario)
-        return redirect('/')  
+        separar_usuarios(nombre, apellidos, grupo, usuario, hasheado, token_telegram, id_chat, tipo_usuario)
+        return redirect('/')
+
+def crear_grupo(request):
+    form = GrupoForm(request.POST)
+    if request.method == "GET":
+        t = 'envio.html'
+        
+        return render(request, t, {'form': form})
+        pass
+    elif request.method == "POST":
+        if form.is_valid():
+            nombre = request.POST['nombre']
+            grupo = models.Grupo(nombre=nombre)
+            grupo.save()
+            return redirect('/')
 
 def logout(request):
     request.session['Logueado'] = False
