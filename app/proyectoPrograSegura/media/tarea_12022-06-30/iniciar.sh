@@ -5,4 +5,4 @@ while [ $contadors -ge $contador ]
 do
     touch archivo$contador.txt
     let contador=$contador+1
-done
+done 

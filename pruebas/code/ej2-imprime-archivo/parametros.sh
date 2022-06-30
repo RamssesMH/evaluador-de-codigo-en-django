@@ -1,5 +1,5 @@
 #! /bin/bash
-nombrearchivo.txt
+/bin/bash alumno.sh nombrearchivo.txt
 if [[ $? == 0 ]]
 then
     echo 0

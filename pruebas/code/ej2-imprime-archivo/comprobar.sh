@@ -1,8 +1,7 @@
 #! /bin/bash
-A=$(/bin/bash ej2-imprime-archivo/nombrearchivo.txt)
+A=$(/bin/bash alumno.sh nombrearchivo.txt)
 if [[ $A == "salida final" ]]
 then
-    echo "hola a todos"
     exit 0
 else
     echo 1

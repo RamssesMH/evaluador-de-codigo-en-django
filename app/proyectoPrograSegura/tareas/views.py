@@ -15,12 +15,13 @@ def crear_dockerfile(path):
     dockerfile.close()
 
 def ejecutar_tarea(path, nombre):
-    imagen = subprocess.Popen(['docker', 'build', path, '-t', nombre])
-    # iniciar = subprocess.run(['docker', 'run', '--name', nombre, '-it', nombre, 'main.py', '-i', 'iniciar.sh', '-p', 'parametros.sh', '-c', 'comprobar.sh'], capture_output=True)
-    iniciar = subprocess.run(['ls'],stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    print(iniciar)
-    
-    return 1
+    imagen = subprocess.run(['docker', 'build', path, '-t', nombre])
+    iniciar = subprocess.run(['docker', 'run', '--name', nombre, nombre, 'main.py', '-i', 'iniciar.sh', '-p', 'parametros.sh', '-c', 'comprobar.sh'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    out = iniciar.stdout.decode('utf-8')
+    calif = out[-3:]
+    c = calif.strip()
+    c = int(c)
+    return c
 
 # Create your views here.
 def subir_tarea(request):
@@ -60,7 +61,9 @@ def subir_tarea(request):
                 os.system(copiar_script_principal)
                 nombre_imagen_docker = str(document.id)+"-"+str(document.nombre)
                 calificacion = ejecutar_tarea(ruta_final, nombre_imagen_docker)
-                print("La calificacion es", calificacion)
+                calif = models.Entregada.objects.get(id=document.id)
+                calif.calificacion = calificacion
+                calif.save()
             return render(request, t, context = {
             "files": documents
             })

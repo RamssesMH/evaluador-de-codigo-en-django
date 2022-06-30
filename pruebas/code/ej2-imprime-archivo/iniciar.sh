@@ -1,2 +1,2 @@
 #! /bin/bash
-echo 'salida final' > nombrearchivo.txt
+echo 'salida final' > nombrearchivo.txt 

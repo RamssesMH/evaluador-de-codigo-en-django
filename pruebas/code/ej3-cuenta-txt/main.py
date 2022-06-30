@@ -1,8 +1,9 @@
 import subprocess
 import argparse
-
+from unittest import result
 
 def ejecutar_iniciar(script):
+    bien = 0
     iniciar = subprocess.Popen(['/bin/bash', script])
     try:
         outs, errs = iniciar.communicate(timeout=5)
@@ -10,8 +11,13 @@ def ejecutar_iniciar(script):
         iniciar.kill()
         outs, errs = iniciar.communicate()
         exit(1)
+    vari = iniciar.returncode
+    if vari==0:
+        bien=bien + 3.3
+    return bien
 
 def ejecutar_parametros(script):
+    bien = 0
     parametros = subprocess.Popen(['/bin/bash', script])
     try:
         outs, errs = parametros.communicate(timeout=5)
@@ -19,8 +25,13 @@ def ejecutar_parametros(script):
         parametros.kill()
         outs, errs = parametros.communicate()
         exit(1)
+    vari = parametros.returncode
+    if vari==0:
+        bien=bien + 3.3
+    return bien
 
 def ejecutar_comprobar(script):
+    bien = 0
     comprobar = subprocess.Popen(['/bin/bash', script])
     try:
         outs, errs = comprobar.communicate(timeout=5)
@@ -28,6 +39,10 @@ def ejecutar_comprobar(script):
         comprobar.kill()
         outs, errs = comprobar.communicate()
         exit(1)
+    vari = comprobar.returncode
+    if vari==0:
+        bien=bien + 3.3
+    return bien
 
 if __name__ == '__main__':
     all_args =  argparse.ArgumentParser()
@@ -40,7 +55,11 @@ if __name__ == '__main__':
     script_iniciar = args['Iniciar']
     script_parametros = args['Parametros']
     script_comprobar = args['Comprobar']
-
-    ejecutar_iniciar(script_iniciar)
-    ejecutar_parametros(script_parametros)
-    ejecutar_comprobar(script_comprobar)
+    bien = 0
+    a = ejecutar_iniciar(script_iniciar)
+    b = ejecutar_parametros(script_parametros)
+    c =ejecutar_comprobar(script_comprobar)
+    
+    result = a+b+c
+    
+    print (round(result))
