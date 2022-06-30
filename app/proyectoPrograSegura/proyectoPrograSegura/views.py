@@ -250,7 +250,7 @@ def separar_usuarios(nombre, apellidos, grupo, usuario, hasheado, token_telegram
         registro_alumno.save()  
 
 def validar_contraseña(password):
-    regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!#%*?&-_]{10,}$"
+    regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&._-])[A-Za-z\d@$!#%*?&-._]{10,}$"
     if re.search(regex, password) is not None:
         return True
     return False
