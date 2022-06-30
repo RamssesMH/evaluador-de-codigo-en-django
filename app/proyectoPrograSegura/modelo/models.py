@@ -9,11 +9,14 @@ def directorio_archivo(instance, archivo):
     return 'media/{0}/{1}'.format(nombre_directorio, archivo)
 
 def directorio_tarea(instance, archivo):
-    tarea = str(instance.id)
+    """ este es el numero de la actividad a la que se quiso responder"""
+    tarea = str(instance.nombre)
+    """Es la id del usuario que respondio la actividad"""
     tarea2 = str(instance.usuario_id)
     fecha = datetime.date.today()
     nombre_directorio = tarea+"-"+tarea2+"-" + str(fecha)
     return 'tarea-subida/{0}/{1}'.format(nombre_directorio, archivo)
+    
 
 
 

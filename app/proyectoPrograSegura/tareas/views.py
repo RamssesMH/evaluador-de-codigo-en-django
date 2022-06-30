@@ -16,7 +16,7 @@ def subir_tarea(request):
         # Fetching the form data
         uploadedFile = request.FILES["uploadedFile"]
         nombre = request.POST['nombreTarea']
-        
+        tarea = models.Tarea.objects.get(id=nombre)
                 
         # Saving the information in the database
         document = models.Entregada(
@@ -24,10 +24,23 @@ def subir_tarea(request):
             usuario = alumno,
             nombre = nombre,
             uploadedFile = uploadedFile
-
         )
         document.save()
-                
+        documento = document.uploadedFile
+        ruta = str(documento)
+        ruta_ejers = models.Tarea.objects.get(id=document.nombre)
+        ruta_ejer = ruta_ejers.script_comprobacion
+        ruta_ejer = str(ruta_ejer)
+        
+        x = ruta.split('/')
+
+        ruta_final = x[0].strip()+"/"+x[1].strip()+"/"
+        x = ruta_ejer.split('/')
+        ruta_final_ejer = x[0].strip()+"/"+x[1].strip()+"/"
+
+        comando_completo= "cp "+ruta_final_ejer+" * "+ruta_final
+        os.system(comando_completo)
+        
     documents = models.Tarea.objects.all()
 
     return render(request, t, context = {
