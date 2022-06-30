@@ -231,10 +231,22 @@ def enviar_formulario(request):
 
 def separar_usuarios(nombre, apellidos, grupo, usuario, hasheado, token_telegram, id_chat, tipo_usuario):
     if tipo_usuario == 'maestro':
-        registro_maestro=models.Maestro(nombre=nombre, apellidos=apellidos, grupo=grupo, usuario=usuario, password=hasheado, token_telegram=token_telegram, chat_id=id_chat)
+        registro_maestro=models.Maestro(nombre=nombre, 
+                                        apellidos=apellidos, 
+                                        grupo=grupo, 
+                                        usuario=usuario, 
+                                        password=hasheado, 
+                                        token_telegram=token_telegram, 
+                                        chat_id=id_chat)
         registro_maestro.save()
     elif tipo_usuario == 'alumno':
-        registro_alumno=models.Alumno(nombre=nombre, apellidos=apellidos, grupo=grupo, usuario=usuario, password=hasheado, token_telegram=token_telegram, chat_id=id_chat)
+        registro_alumno=models.Alumno(nombre=nombre, 
+                                        apellidos=apellidos, 
+                                        grupo=grupo, 
+                                        usuario=usuario, 
+                                        password=hasheado, 
+                                        token_telegram=token_telegram, 
+                                        chat_id=id_chat)
         registro_alumno.save()  
 
 def validar_contraseña(password):
@@ -252,6 +264,7 @@ def registro_usuarios(request):
         apellidos = request.POST['apellidos']
         usuario=request.POST['usuario']
         password=request.POST['password']
+        grupo=request.POST['grupo']
         token_telegram = request.POST['token']
         id_chat = request.POST['id_chat']
         tipo_usuario = request.POST['tipo_usuario']
@@ -268,7 +281,14 @@ def registro_usuarios(request):
         salt = base64.b64encode(bytes_aleatorios).decode('utf-8')
         hasheado = crypt.crypt(password, '$6$' + salt)
         grupo = models.Grupo.objects.get(id=1)
-        registro_user=models.registro_usuarios(nombre=nombre, apellidos=apellidos, grupo=grupo, usuario=usuario, password=hasheado, token_telegram=token_telegram, chat_id=id_chat, tipo_usuario=tipo_usuario)
+        registro_user=models.registro_usuarios(nombre=nombre, 
+                                                apellidos=apellidos, 
+                                                grupo=grupo, 
+                                                usuario=usuario, 
+                                                password=hasheado, 
+                                                token_telegram=token_telegram, 
+                                                chat_id=id_chat, 
+                                                tipo_usuario=tipo_usuario)
         registro_user.save()
         separar_usuarios(nombre, apellidos, grupo, usuario, hasheado, token_telegram, id_chat, tipo_usuario)
         return redirect('/')

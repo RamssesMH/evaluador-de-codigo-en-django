@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block titulo %}Analizador de código{% endblock %}
+{% block encabezado %}Revisar tarea{% endblock %}
+{% block contenido %}
+<style>
+        table {
+            width: 100%;
+            text-align: center;
+            margin-top: 25px;
+            padding: 25px;
+            background-color: #FFFFFF;
+        }
+
+        table tr td {
+            padding-top: 15px;
+        }
+</style>
+<div class="container-fluid">
+
+    <table>
+    <tr>
+        <th>USUARIO</th>
+        <th>NOMBRE</th>
+        <th>CALIFICACIÓN</th>
+        <th>dateTimeOfUpload</th>
+    </tr>
+    {% for tarea in tareas_entregadas %}
+        <tr>
+            <td>{{ tarea.usuario }}</td>
+            <td>{{ tarea.nombre }}</td>
+            <td>{{ tarea.calificacion }}</td>
+            <td>{{ tarea.dateTimeOfUpload }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+</div>
+{% endblock %}

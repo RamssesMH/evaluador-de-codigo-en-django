@@ -29,5 +29,6 @@ urlpatterns = [
     path('grupo/', vistas.crear_grupo),
     path('subir_tarea/', vistas_tareas.subir_tarea),
     path('crearTarea/', vistas_tareas.crear_tarea),
+    path('revisar_tarea/', vistas_tareas.revisar_tarea),
     
 ]
