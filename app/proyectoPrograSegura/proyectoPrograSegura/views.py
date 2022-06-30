@@ -264,7 +264,6 @@ def registro_usuarios(request):
         apellidos = request.POST['apellidos']
         usuario=request.POST['usuario']
         password=request.POST['password']
-        grupo=request.POST['grupo']
         token_telegram = request.POST['token']
         id_chat = request.POST['id_chat']
         tipo_usuario = request.POST['tipo_usuario']
