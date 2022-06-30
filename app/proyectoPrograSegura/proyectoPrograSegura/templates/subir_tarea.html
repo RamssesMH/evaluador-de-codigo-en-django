@@ -1,6 +1,17 @@
 {% extends 'base.html' %}
 {% block titulo %}Analizador de código{% endblock %}
 {% block encabezado %}Lista de tareas{% endblock %}
+{% block contenido1 %}
+<div>
+  <div class="container-fluid">
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+          <li><a href="/">Regresar</a></li>
+        </ul>
+      </div>
+    </div>
+</div>
+{% endblock %}
 {% block contenido %}
 {% if message %}
 <strong>Lista de tareas</strong>
@@ -41,7 +52,6 @@
         <tr>
             <th>Nombre del ejercicio</th>
             <th>Descripcion</th>
-            <th>Maestro</th>
             <th>Entregar tarea</th>
         </tr>
         {% for file in files %}
@@ -49,14 +59,13 @@
                 
                 <td>{{ file.nombre }}</td>
                 <td>{{ file.descripcion }}</td>
-                <td>{{ file.maestro }}</td>
                 <td>
                 <form method="POST" action="" enctype="multipart/form-data">
                     {% csrf_token %}
                       {{ form.as_p }}
                     <input type="file" name="uploadedFile" required >
                     <input name="nombreTarea" type="hidden" value= "{{ file.id }}" > 
-                      <input type="submit" value="Ingresar"/>
+                      <td><input type="submit" value="Ingresar"/></td>
                     </form>
                   
                   </td>

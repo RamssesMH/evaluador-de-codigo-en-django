@@ -2,6 +2,18 @@
 {% extends 'base.html' %}
 {% block titulo %}Analizador de código{% endblock %}
 {% block encabezado %}Inicio de sesión{% endblock %}
+{% block contenido1 %}
+<div>
+  <div class="container-fluid">
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+          <li><a href="/grupo">Crear Grupo</a></li>
+          <li><a href="/registro">Registrarse</a></li>
+        </ul>
+      </div>
+    </div>
+</div>
+{% endblock %}
 {% block contenido %}
 {% if message %}
 <strong>{{ message }}</strong>
