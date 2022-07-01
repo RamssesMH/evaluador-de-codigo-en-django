@@ -1,0 +1,19 @@
+#!/usr/bin/expect
+
+set servidor [lindex $argv 0]
+set usuario [lindex $argv 1]
+set passwordViejo [lindex $argv 2]
+set passwordNuevo [lindex $argv 3]
+
+set timeout -1
+spawn ./conexion.sh $usuario $servidor
+match_max 100000
+expect -re ".*password.*"
+send -- "$passwordViejo\r"
+expect -re ".*Current.*"
+send -- "$passwordViejo\r"
+expect -re ".*New.*"
+send -- "$passwordNuevo\r"
+expect -re ".*Retype.*"
+send -- "$passwordNuevo\r"
+expect eof

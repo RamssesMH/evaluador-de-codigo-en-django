@@ -19,3 +19,91 @@
 30-Jun-22 18:52:56 - WARNING - Not Found: /favicon.ico
 30-Jun-22 18:53:04 - INFO - El usuario ha salido correctamente mari
 30-Jun-22 18:53:20 - INFO - El usuario ha accedido correctamente ram
+01-Jul-22 09:06:02 - INFO - El usuario ha accedido correctamente josue
+01-Jul-22 09:06:54 - INFO - El usuario ha salido correctamente josue
+01-Jul-22 09:07:08 - INFO - El usuario ha accedido correctamente sica
+01-Jul-22 09:07:59 - INFO - El usuario ha creado una tarea Tarea 1
+01-Jul-22 09:09:06 - INFO - El usuario ha salido correctamente sica
+01-Jul-22 09:09:25 - INFO - El usuario ha accedido correctamente josue
+01-Jul-22 09:10:12 - INFO - El usuario ha subido una tarea Alumno object (1)
+01-Jul-22 09:30:48 - INFO - El usuario ha subido una tarea Alumno object (1)
+01-Jul-22 09:35:12 - INFO - El usuario ha subido una tarea Alumno object (1)
+01-Jul-22 09:39:34 - ERROR - Internal Server Error: /subir_tarea/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.9/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/app/tareas/views.py", line 105, in subir_tarea
+    calificacion = ejecutar_tarea(ruta_final, document.id, document.nombre)
+  File "/app/tareas/views.py", line 51, in ejecutar_tarea
+    nombre = script_alumno+"-"+id_entrega+"-"+id_tarea
+TypeError: can only concatenate str (not "int") to str
+01-Jul-22 09:40:10 - ERROR - Internal Server Error: /subir_tarea/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.9/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/app/tareas/views.py", line 105, in subir_tarea
+    calificacion = ejecutar_tarea(ruta_final, document.id, document.nombre)
+  File "/app/tareas/views.py", line 60, in ejecutar_tarea
+    c = int(c)
+ValueError: invalid literal for int() with base 10: ''
+01-Jul-22 09:40:57 - ERROR - Internal Server Error: /subir_tarea/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.9/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/app/tareas/views.py", line 106, in subir_tarea
+    calificacion = ejecutar_tarea(ruta_final, document.id, document.nombre)
+  File "/app/tareas/views.py", line 61, in ejecutar_tarea
+    c = int(c)
+ValueError: invalid literal for int() with base 10: ''
+01-Jul-22 09:43:42 - INFO - El usuario ha subido una tarea Alumno object (1)
+01-Jul-22 12:47:37 - ERROR - Internal Server Error: /subir_tarea/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.9/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/app/tareas/views.py", line 71, in subir_tarea
+    if request.session['Logueado'] == True:
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/sessions/backends/base.py", line 50, in __getitem__
+    return self._session[key]
+KeyError: 'Logueado'
+01-Jul-22 12:48:10 - INFO - El usuario ha accedido correctamente josue
+01-Jul-22 12:48:28 - INFO - El usuario ha subido una tarea Alumno object (1)
+01-Jul-22 15:58:28 - ERROR - Internal Server Error: /subir_tarea/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.9/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/app/tareas/views.py", line 71, in subir_tarea
+    if request.session['Logueado'] == True:
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/sessions/backends/base.py", line 50, in __getitem__
+    return self._session[key]
+KeyError: 'Logueado'
+01-Jul-22 15:58:28 - WARNING - Not Found: /favicon.ico
+01-Jul-22 15:58:33 - ERROR - Internal Server Error: /subir_tarea/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.9/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/app/tareas/views.py", line 71, in subir_tarea
+    if request.session['Logueado'] == True:
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/sessions/backends/base.py", line 50, in __getitem__
+    return self._session[key]
+KeyError: 'Logueado'
+01-Jul-22 15:58:57 - INFO - El usuario ha accedido correctamente sica
+01-Jul-22 15:59:29 - INFO - El maestro Maestro object (1) ha creado la tarea Tarea 1
+01-Jul-22 15:59:42 - INFO - El usuario ha salido correctamente sica
+01-Jul-22 16:00:02 - INFO - El usuario ha accedido correctamente josue
+01-Jul-22 16:00:35 - INFO - El usuario ha subido una tarea Alumno object (1)
+01-Jul-22 16:01:18 - INFO - El usuario ha subido una tarea Alumno object (1)
+01-Jul-22 16:01:53 - INFO - El usuario ha salido correctamente josue
+01-Jul-22 16:02:33 - INFO - El usuario ha accedido correctamente sica
+01-Jul-22 16:03:01 - INFO - El usuario ha salido correctamente sica
