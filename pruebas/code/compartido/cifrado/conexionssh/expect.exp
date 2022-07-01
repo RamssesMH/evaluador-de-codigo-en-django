@@ -1,0 +1,14 @@
+#!/usr/bin/expect
+
+set host [lindex $argv 0]
+set puerto [lindex $argv 1]
+set usuario [lindex $argv 2]
+
+set password "$env(password)\n"
+
+set timeout -1
+spawn ./conexion.sh $host $puerto $usuario
+match_max 100000
+expect -re ".*password.*"
+send -- "$password\r"
+expect eof

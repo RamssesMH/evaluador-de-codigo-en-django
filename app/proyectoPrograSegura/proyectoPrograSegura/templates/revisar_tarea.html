@@ -38,14 +38,12 @@
         <th>HORA DE ENTREGA</th>
     </tr>
     {% for tarea in tareas  %}
-    {% for alumno in alumnos  %}
         <tr>
-            <td>{{ alumno.nombre }} {{alumno.apellidos}}</td>
+            <td>{{ tarea.usuario_id }} {{alumno.apellidos}}</td>
             <td>{{ tarea.nombre }}</td>
             <td>{{ tarea.calificacion }}</td>
             <td>{{ tarea.dateTimeOfUpload }}</td>
         </tr>
-    {% endfor %}
     {% endfor %}
     </caption>
     </table>

@@ -1,0 +1,4 @@
+[Service]
+ExecStart=/home/melina/oneDrive/Dropbox/clases/programacionAdminRed/agosto2020/compartido/systemd/continuo.sh
+[Install]
+WantedBy=multi-user.target

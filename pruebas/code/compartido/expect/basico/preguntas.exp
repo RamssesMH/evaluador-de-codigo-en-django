@@ -1,0 +1,12 @@
+#!/usr/bin/expect
+
+set timeout -1
+spawn ./preguntas.sh
+match_max 100000
+expect -re ".*nombre.*\r"
+send -- "Xavier\r"
+expect -re ".*edad.*\r"
+send -- "21\r"
+expect -re ".*estudias.*\r"
+send -- "redes\r"
+expect eof

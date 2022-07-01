@@ -1,3 +1,4 @@
+from email import message
 from django.shortcuts import render, redirect
 from tareas.form import crearTareaForm
 from datetime import datetime
@@ -27,7 +28,18 @@ def crear_dockerfile(path):
     dockerfile.write('ENTRYPOINT ["python3"]\n')
     dockerfile.close()
 
-def ejecutar_tarea(path, nombre):
+def obtener_nombre_archivo(path):
+    """
+    Rutina que separa el nombre del archivo del directorio
+    keyword Arguments:
+        path: string
+        returns: String
+    """
+    directorio_archivo = path.split('/')
+    archivo = directorio_archivo[2]
+    return archivo
+
+def ejecutar_tarea(path, id_entrega, id_tarea):
     """
     Rutina que ejecuta una tarea en un ambiente controlado (sandbox)
     keyword Arguments:
@@ -35,16 +47,27 @@ def ejecutar_tarea(path, nombre):
         nombre: string
         returns: Int (Calificación)
     """
+    tarea = models.Tarea.objects.get(id=id_tarea)
+    tarea_inicializacion = tarea.script_inicializacion
+    tarea_comprobacion = tarea.script_comprobacion
+    tarea_parametros = tarea.script_parametros
+    script_inicializacion = obtener_nombre_archivo(str(tarea_inicializacion))
+    script_comprobacion = obtener_nombre_archivo(str(tarea_comprobacion))
+    script_parametros = obtener_nombre_archivo(str(tarea_parametros))
+    script_alumno =  obtener_nombre_archivo(str(models.Entregada.objects.get(id=id_entrega).uploadedFile))
+    nombre = str(id_entrega)+"-"+str(id_tarea)
+    
     imagen = subprocess.run(['docker', 'build', path, '-t', nombre])
-    iniciar = subprocess.run(['docker', 'run', '--name', nombre, nombre, 'main.py', '-i', 'iniciar.sh', '-p', 'parametros.sh', '-c', 'comprobar.sh'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    iniciar = subprocess.run(['docker', 'run', '--name', nombre, nombre, 'main.py', '-i', script_inicializacion, '-p', script_parametros, '-c', script_comprobacion, '-a', script_alumno], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     borrar_contenedor = subprocess.run(['docker', 'rm', nombre])
     borrrar_imagen = subprocess.run(['docker', 'image', 'rm', nombre])
     out = iniciar.stdout.decode('utf-8')
+    print (out)
     calif = out[-3:]
     c = calif.strip()
     c = int(c)
     return c
-
+ 
 def subir_tarea(request):
     """
     Rutina que permite al estudiante responder a una tarea
@@ -87,13 +110,16 @@ def subir_tarea(request):
                 copiar_script_principal = "cp script_general/* " + ruta_final
                 os.system(copiar_script_principal)
                 nombre_imagen_docker = str(document.id)+"-"+str(document.nombre)
-                calificacion = ejecutar_tarea(ruta_final, nombre_imagen_docker)
+                calificacion = ejecutar_tarea(ruta_final, document.id, document.nombre)
                 calif = models.Entregada.objects.get(id=document.id)
                 calif.calificacion = calificacion
                 calif.save()
+                nombre_tarea = str(models.Tarea.objects.get(id=calif.nombre).nombre)
+                message = "Tu calificación a la tarea "+ nombre_tarea +" es "+ str(calif.calificacion)
                 logging.info(f'El usuario ha subido una tarea {calif.usuario}')
             return render(request, t, context = {
-            "files": documents
+            "files": documents,
+            'message': message
             })
         else:
             return redirect('/home')
@@ -133,7 +159,7 @@ def crear_tarea(request):
                             script_inicializacion=script_inicializacion
                         )
                         tarea.save()
-                        logging.info(f'El usuario ha creado una tarea {tarea.nombre}')
+                        logging.info(f'El maestro {maestro} ha creado la tarea {tarea.nombre}')
                         return redirect('/crearTarea/')
             else:
                 return redirect('/home')
