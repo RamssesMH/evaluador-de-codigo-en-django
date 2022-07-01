@@ -19,3 +19,82 @@
 30-Jun-22 18:52:56 - WARNING - Not Found: /favicon.ico
 30-Jun-22 18:53:04 - INFO - El usuario ha salido correctamente mari
 30-Jun-22 18:53:20 - INFO - El usuario ha accedido correctamente ram
+30-Jun-22 18:58:05 - WARNING - Not Found: /favicon.ico
+30-Jun-22 18:58:12 - INFO - El usuario ha accedido correctamente mari
+30-Jun-22 19:03:03 - ERROR - Internal Server Error: /revisar_tarea/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.9/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/app/tareas/views.py", line 152, in revisar_tarea
+    if request.session['Logueado'] == True:
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/sessions/backends/base.py", line 50, in __getitem__
+    return self._session[key]
+KeyError: 'Logueado'
+30-Jun-22 19:03:06 - ERROR - Internal Server Error: /revisar_tarea/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.9/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/app/tareas/views.py", line 152, in revisar_tarea
+    if request.session['Logueado'] == True:
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/sessions/backends/base.py", line 50, in __getitem__
+    return self._session[key]
+KeyError: 'Logueado'
+30-Jun-22 19:06:24 - ERROR - Internal Server Error: /subir_tarea/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.9/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/app/tareas/views.py", line 55, in subir_tarea
+    if request.session['Logueado'] == True:
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/sessions/backends/base.py", line 50, in __getitem__
+    return self._session[key]
+KeyError: 'Logueado'
+30-Jun-22 19:06:25 - ERROR - Internal Server Error: /subir_tarea/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.9/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/app/tareas/views.py", line 55, in subir_tarea
+    if request.session['Logueado'] == True:
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/sessions/backends/base.py", line 50, in __getitem__
+    return self._session[key]
+KeyError: 'Logueado'
+30-Jun-22 19:06:27 - INFO - El usuario ha salido correctamente S18014102
+30-Jun-22 19:06:29 - ERROR - Internal Server Error: /logout/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.9/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/app/proyectoPrograSegura/views.py", line 372, in logout
+    user = request.session['user']
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/sessions/backends/base.py", line 50, in __getitem__
+    return self._session[key]
+KeyError: 'user'
+30-Jun-22 19:06:35 - ERROR - Internal Server Error: /logout/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.9/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/app/proyectoPrograSegura/views.py", line 372, in logout
+    user = request.session['user']
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/sessions/backends/base.py", line 50, in __getitem__
+    return self._session[key]
+KeyError: 'user'
+30-Jun-22 19:09:16 - INFO - El usuario ha salido correctamente mari
+30-Jun-22 19:18:05 - INFO - El usuario ha salido correctamente ram
+30-Jun-22 19:21:12 - INFO - El usuario ha fallado la autenticacion usuario y contraseña fei
+30-Jun-22 19:22:02 - WARNING - El usuario ha fallado la autenticacion usuario y contraseña mari
+30-Jun-22 19:22:21 - INFO - El usuario ha accedido correctamente mari
+30-Jun-22 19:24:28 - INFO - El usuario ha creado una tarea Tarea 1
+30-Jun-22 19:25:48 - INFO - El usuario ha salido correctamente mari
+30-Jun-22 19:26:04 - INFO - El usuario ha accedido correctamente ram
+30-Jun-22 19:29:08 - INFO - El usuario ha subido una tarea Alumno object (1)
+30-Jun-22 19:35:40 - INFO - El usuario ha subido una tarea Alumno object (1)
